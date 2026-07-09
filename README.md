@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 100 Days of AI: From Zero to Proficiency
 
 A **structured learning journey** documenting my progression from foundational AI concepts to building production-ready intelligent applications. This repository showcases hands-on implementation, problem-solving, and rapid skill acquisition in cutting-edge AI technologies.
@@ -129,3 +130,7 @@ This is an **active learning journey**. If you're interested in discussing AI im
 **Last Updated:** July 2026  
 **Next Milestone:** Advanced agent systems & real-world applications
 
+=======
+# 100_days_of-_ai
+will be learning ai from scratch
+>>>>>>> origin/main
