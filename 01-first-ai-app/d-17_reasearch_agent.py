@@ -4,6 +4,7 @@ from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 import os
+from reflection_agent import ReflectionAgent
 
 
 # Load environment variables
@@ -183,7 +184,41 @@ class ReasearchAgent:
 
         return response.text
 
-    # Final Response
+
+# day17-research agent
+# 
+#  
+#     # Final Response
+#     def generate_recommendations(self,analysis):
+#         print(f"Generating recommendations...")
+#         prompt = f"""
+#         User Goal: {self.goal}
+#         analysis:{analysis}
+        
+#         Generate:
+#         1. executive Summary
+#         2. Recommendations
+#         3. Learning path
+#         4. final verdict
+        
+
+       
+# """
+        
+#         response = client.models.generate_content(
+#             model = "gemini-2.5-flash",
+#             contents = prompt
+#         )
+
+#         print("="*60)
+#         print("Final Recommendattion ")
+#         print("="*60)
+
+#         print(response.text)
+
+
+#day 18 reflection agent imported from file
+# Final Response
     def generate_recommendations(self,analysis):
         print(f"Generating recommendations...")
         prompt = f"""
@@ -208,8 +243,16 @@ class ReasearchAgent:
         print("="*60)
         print("Final Recommendattion ")
         print("="*60)
+        draft=response.text
+        reflect=ReflectionAgent()
 
-        print(response.text)
+        reflect.reflect(draft)
+
+        
+
+        
+
+
 
     # Run Agent
     def run(self):
