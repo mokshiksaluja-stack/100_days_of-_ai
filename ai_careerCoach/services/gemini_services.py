@@ -18,7 +18,7 @@ class GeminiServices:
         self.client=genai.Client(api_key=Config.GEMINI_API_KEY)
 
 
-    def generate_response(self,prompts):
+    def generate_response(self,prompts:str,config:Optional[Any] = None)->Any:
 
         """
         Send prompt to Gemini and return response
@@ -32,7 +32,8 @@ class GeminiServices:
         try:
             response=self.client.models.generate_content(
             model=Config.MODEL_NAME,
-            contents=prompts
+            contents=prompts,
+            config=config
             )
 
         except Exception as ex:
