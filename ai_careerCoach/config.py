@@ -8,7 +8,7 @@ import os
 
 from dotenv import load_dotenv
 
-# load_dotenv()
+load_dotenv()
 
 class Config:
     """
@@ -25,7 +25,7 @@ class Config:
 
         """
 
-        if not config.GEMINI_API_KEY:
+        if not Config.GEMINI_API_KEY:
             raise ValueError(
                 "api key not found check .env file"
             )

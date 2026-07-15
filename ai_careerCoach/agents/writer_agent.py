@@ -17,7 +17,7 @@ class WriterAgent(BaseAgent):
 
     def Build_Promt(self):
         research_res=self.memory.get("research")
-        return WRITER_PROMPT.format(research_output=research_res)
+        return WRITER_PROMPT.format(research_output=research_res.output)
     
 
     #{user_query} is a placeholder.

@@ -17,7 +17,7 @@ class ResearchAgent(BaseAgent):
 
     def Build_Promt(self):
         planner_res=self.memory.get("planner")
-        return RESEARCH_PROMPT.format(planner_output=plann)
+        return RESEARCH_PROMPT.format(planner_output=planner_res.output)
     
 
     #{user_query} is a placeholder.

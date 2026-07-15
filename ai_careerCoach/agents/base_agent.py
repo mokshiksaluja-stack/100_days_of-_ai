@@ -11,7 +11,7 @@ Responsibilites:
 """
 
 
-from  abc import ABC
+from  abc import ABC,abstractmethod
 from services.gemini_services import GeminiServices
 from memory.shared_memory import SharedMemory
 from model.agent_response import AgentResponse
@@ -19,10 +19,10 @@ from model.agent_response import AgentResponse
 #inherits abc class
 class BaseAgent(ABC):
 
-    def __init__(self,memory:SharedMemory):
-        super().__init__(self)
+    def __init__(self,memory:SharedMemory,gemini_service: GeminiServices):
+        super().__init__()
         self.memory=memory
-        self.gemini=GeminiServices()
+        self.gemini=gemini_service
 
    
 
@@ -35,13 +35,14 @@ class BaseAgent(ABC):
         pass
 
     @abstractmethod
-    def get_memory_key():
+    def get_memory_key(self):
         """
         It returns the key in which we have to store the data. 
         """
+        pass
 
-    @abstractethod
-    def Build_Promt():
+    @abstractmethod
+    def Build_Promt(self):
         """Build a prompt using data available in shared memory. """
         pass
 
@@ -55,10 +56,11 @@ class BaseAgent(ABC):
         gemini_response=self.gemini.generate_response(prompt)
         agent_response=AgentResponse(
             agent_name=self.get_agent_name(),
-            output=gemini_response.text
+            output=gemini_response.text,
+            status="SUCCESS"
         )
         self.memory.add(
-            self.get_memory_key,
+            self.get_memory_key(),
             agent_response
         )
         return agent_response

@@ -6,6 +6,7 @@ Gemini service
 
 from google import genai
 from config import Config
+from typing import Any ,Optional
 
 
 class GeminiServices:
@@ -35,6 +36,7 @@ class GeminiServices:
             contents=prompts,
             config=config
             )
+            return response
 
         except Exception as ex:
             raise RuntimeError(
