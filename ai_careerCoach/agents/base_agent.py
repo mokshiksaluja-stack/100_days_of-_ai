@@ -15,14 +15,16 @@ from  abc import ABC,abstractmethod
 from services.gemini_services import GeminiServices
 from memory.shared_memory import SharedMemory
 from model.agent_response import AgentResponse
+from memory.conversation_memory import ConversationMemory
 
 #inherits abc class
 class BaseAgent(ABC):
 
-    def __init__(self,memory:SharedMemory,gemini_service: GeminiServices):
+    def __init__(self,memory:SharedMemory,gemini_service: GeminiServices,conversation_memory:ConversationMemory):
         super().__init__()
         self.memory=memory
         self.gemini=gemini_service
+        self.conversation_memory=conversation_memory
 
    
 
@@ -52,8 +54,21 @@ class BaseAgent(ABC):
         Execute the complete ai agent workflow
         build prompt->call gemini->creat agenrresource->store int memo->return resourse
         """
-        prompt=self.Build_Promt()
+        agent_prompt=self.Build_Promt()
+        conversation=self.conversation_memory.get_context()
+
+        prompt=f"""
+        conversation/context/history:{conversation}
+        -----------------------------------------------
+        currebttask:{agent_prompt}
+        
+        """
+
+
+
         gemini_response=self.gemini.generate_response(prompt)
+        #adding gemini response to conversation history
+        self.conversation_memory.add_ai_message(gemini_response.text)
         agent_response=AgentResponse(
             agent_name=self.get_agent_name(),
             output=gemini_response.text,

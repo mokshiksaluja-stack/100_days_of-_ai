@@ -8,9 +8,10 @@ from memory.shared_memory import SharedMemory
 
 
 class AgentOrchestrator:
-    def __init__(self,memory:SharedMemory):
+    def __init__(self,memory:SharedMemory,conversation_memory):
         self.memory=memory
         self.agents:List[BaseAgent]=[]
+        self.conversation_memory=conversation_memory
 
     def registry(self,agent):
         """
