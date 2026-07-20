@@ -17,10 +17,12 @@ from services.gemini_services import GeminiServices
 
 from memory.shared_memory import SharedMemory
 from memory.conversation_memory import ConversationMemory
+from knowledge.knowledge_base import KnowledgeBase
 
 def main() :
     conversation_memory=ConversationMemory()
     gemini_service = GeminiServices()
+    knowledge_base=KnowledgeBase("./data/career_knowledge.json")
 
     while True:
         print("=" * 70)
@@ -43,10 +45,10 @@ def main() :
 
 
         # Create Agents
-        planner = PlannerAgent(memory, gemini_service,conversation_memory)
-        researcher = ResearchAgent(memory, gemini_service,conversation_memory)
-        writer = WriterAgent(memory, gemini_service,conversation_memory)
-        reviewer = ReviewerAgent(memory, gemini_service,conversation_memory)
+        planner = PlannerAgent(memory, gemini_service,conversation_memory,knowledge_base)
+        researcher = ResearchAgent(memory, gemini_service,conversation_memory,knowledge_base)
+        writer = WriterAgent(memory, gemini_service,conversation_memory,knowledge_base)
+        reviewer = ReviewerAgent(memory, gemini_service,conversation_memory,knowledge_base)
 
         orc=AgentOrchestrator(memory,conversation_memory)
         orc.registry(planner)

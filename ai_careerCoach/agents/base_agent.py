@@ -16,15 +16,17 @@ from services.gemini_services import GeminiServices
 from memory.shared_memory import SharedMemory
 from model.agent_response import AgentResponse
 from memory.conversation_memory import ConversationMemory
+from knowledge.knowledge_base import KnowledgeBase
 
 #inherits abc class
 class BaseAgent(ABC):
 
-    def __init__(self,memory:SharedMemory,gemini_service: GeminiServices,conversation_memory:ConversationMemory):
+    def __init__(self,memory:SharedMemory,gemini_service: GeminiServices,conversation_memory:ConversationMemory,knowledge_base:KnowledgeBase):
         super().__init__()
         self.memory=memory
         self.gemini=gemini_service
         self.conversation_memory=conversation_memory
+        self,knowledge_base=knowledge_base
 
    
 
@@ -56,10 +58,15 @@ class BaseAgent(ABC):
         """
         agent_prompt=self.Build_Promt()
         conversation=self.conversation_memory.get_context()
+        knowledge=self.knowledge_base.retrieve(
+            self.conversation_memory.get_context()
+        )
 
         prompt=f"""
         conversation/context/history:{conversation}
         -----------------------------------------------
+        knowledgeBase:{knowledge}
+        -------------------------------------------------
         currebttask:{agent_prompt}
         
         """
