@@ -13,6 +13,10 @@ from agents.reviewer_agent import ReviewerAgent
 
 from orchestrator.agent_orchestrator import AgentOrchestrator
 
+from routing.workflow_registry import WorkflowRegistry
+from routing.workflow_router import WorkflowRouter
+
+
 from services.gemini_services import GeminiServices
 
 from memory.shared_memory import SharedMemory
@@ -23,6 +27,10 @@ def main() :
     conversation_memory=ConversationMemory()
     gemini_service = GeminiServices()
     knowledge_base=KnowledgeBase("./data/career_knowledge.json")
+
+    workflow_registry=WorkflowRegistry()
+    workflow_router=WorkflowRouter(gemini_service,workflow_registry)
+
 
     while True:
         print("=" * 70)
@@ -58,9 +66,21 @@ def main() :
 
         
 
-        conversation_memory.display()
+        # conversation_memory.display()
 
-        final_response = orc.execute()
+        #Route user,s request
+
+        decision=workflow_router.route(user_query)
+        decision.display()
+
+        #retrive the workflow
+        workflow=workflow_registry.get_workFlow(decision.workflow_name)
+
+
+        for index,agent in enumerate(workflow,start=1):
+            print(f"{index}.{agent.title()}Agent")
+
+        final_response = orc.execute(workflow)
 
         print("="*70)
         print("FINAL CAREER ROADMAP")
