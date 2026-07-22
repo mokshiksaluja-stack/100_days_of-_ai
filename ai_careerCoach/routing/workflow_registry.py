@@ -23,8 +23,12 @@ class WorkflowRegistry:
         """
         Initialize all the supported workflow
         """
-        self.workflows:Dict[str,List[str]]={
-            "roadMap":["planner","researcher","writer","reviewer"],
+        self.workflows:Dict[str,List[str | List[str]]]={
+            "roadmap":["planner",
+                       ["researcher","project","certification"],
+                       "writer",
+                       "reviewer"
+                       ],
 
             "certification":["researcher","writer"],
 
@@ -34,7 +38,7 @@ class WorkflowRegistry:
 
         }
 
-    def get_workFlow(self,workflow_name:str)->List[str]:
+    def get_workflow(self,workflow_name:str)->List[str]:
         """
         Retrieve a workflow
         Args:
@@ -58,7 +62,7 @@ class WorkflowRegistry:
             True if workflow exists
         """
 
-        return workflow_name.lower in self.workflows
+        return workflow_name.lower() in self.workflows
     
     def get_available_workflows(self)->List[str]:
          """
@@ -67,7 +71,7 @@ class WorkflowRegistry:
             List of workflow names
         """
          
-         return List(self.workflows.keys())
+         return list(self.workflows.keys())
          
     def register_workflow(self,workflow_name:str,agents:List[str])->None:
          
@@ -94,7 +98,7 @@ class WorkflowRegistry:
         print("WORKFLOW REGISTRY")
         print("=" * 70)
 
-        for workflow_name, agents in self._workflows.items():
+        for workflow_name, agents in self.workflows.items():
             print("Workflow :", workflow_name.title())
 
             for index, agent in enumerate(agents, start=1):

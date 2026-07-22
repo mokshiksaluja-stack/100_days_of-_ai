@@ -35,7 +35,7 @@ class WorkflowRouter:
         self.registry = workflow_registry
 
     def route(self,user_query:str)->WorkFlowDecision:
-         """
+        """
         Route the user query.
         Args:
             user_query: User request
@@ -44,16 +44,6 @@ class WorkflowRouter:
             WorkflowDecision
         """
          
-    def build_prompt(self,user_query:str)->str:
-        """
-        Build the routing prompt
-        Args:
-            user_query: User request
-        
-        Returns:
-            Prompt string
-        
-        """
         prompt=self.build_prompt(user_query)
         response = self.gemini .generate_response(
             prompt=prompt,
@@ -64,7 +54,18 @@ class WorkflowRouter:
         )
 
         return response.parsed
-
+    
+    
+    def build_prompt(self,user_query:str)->str:
+        """
+        Build the routing prompt
+        Args:
+            user_query: User request
+        
+        Returns:
+            Prompt string
+        
+        """
 
         work_details=[]
         for wk in self.registry.get_available_workflows():

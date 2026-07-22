@@ -13,7 +13,7 @@ class PlannerAgent(BaseAgent):
         return "planner"
     # as key hai to small mai rakha
 
-    def Build_Promt(self):
+    def build_prompt(self):
         user_query=self.memory.get("user_query")
         return PLANNER_PROMPT.format(user_query=user_query)
     

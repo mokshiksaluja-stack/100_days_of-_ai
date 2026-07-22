@@ -21,12 +21,12 @@ from knowledge.knowledge_base import KnowledgeBase
 #inherits abc class
 class BaseAgent(ABC):
 
-    def __init__(self,memory:SharedMemory,gemini_service: GeminiServices,conversation_memory:ConversationMemory,knowledge_base:KnowledgeBase):
+    def __init__(self,memory:SharedMemory,gemini_service: GeminiServices,conversation_memory:ConversationMemory=None,knowledge_base:KnowledgeBase=None):
         super().__init__()
         self.memory=memory
         self.gemini=gemini_service
-        self.conversation_memory=conversation_memory
-        self,knowledge_base=knowledge_base
+        self.conversation_memory=conversation_memory if conversation_memory is not None else ConversationMemory()
+        self.knowledge_base=knowledge_base if knowledge_base is not None else KnowledgeBase("data/career_knowledge.json")
 
    
 
@@ -46,7 +46,7 @@ class BaseAgent(ABC):
         pass
 
     @abstractmethod
-    def Build_Promt(self):
+    def build_prompt(self):
         """Build a prompt using data available in shared memory. """
         pass
 
@@ -56,7 +56,7 @@ class BaseAgent(ABC):
         Execute the complete ai agent workflow
         build prompt->call gemini->creat agenrresource->store int memo->return resourse
         """
-        agent_prompt=self.Build_Promt()
+        agent_prompt=self.build_prompt()
         conversation=self.conversation_memory.get_context()
         knowledge=self.knowledge_base.retrieve(
             self.conversation_memory.get_context()

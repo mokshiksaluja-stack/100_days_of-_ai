@@ -10,6 +10,9 @@ from agents.planner_agent import PlannerAgent
 from agents.research_agent import ResearchAgent
 from agents.writer_agent import WriterAgent
 from agents.reviewer_agent import ReviewerAgent
+from agents.project_agent import ProjectAgent
+from agents.certification_agent import CertificationAgent
+
 
 from orchestrator.agent_orchestrator import AgentOrchestrator
 
@@ -38,7 +41,7 @@ def main() :
         print("=" * 70)
 
         user_query = input("Enter your career goal : \n")
-        if user_query.lower == "exit" or "byy" or "quit":
+        if user_query.lower() in ["exit", "byy", "quit"]:
             break
 
         conversation_memory.add_user_message(user_query)
@@ -57,12 +60,18 @@ def main() :
         researcher = ResearchAgent(memory, gemini_service,conversation_memory,knowledge_base)
         writer = WriterAgent(memory, gemini_service,conversation_memory,knowledge_base)
         reviewer = ReviewerAgent(memory, gemini_service,conversation_memory,knowledge_base)
+        project = ProjectAgent(memory, gemini_service,conversation_memory,knowledge_base)
+        certification = CertificationAgent(memory, gemini_service,conversation_memory,knowledge_base)
+
 
         orc=AgentOrchestrator(memory,conversation_memory)
         orc.registry(planner)
         orc.registry(researcher)
         orc.registry(writer)
         orc.registry(reviewer)
+        orc.registry(project)
+        orc.registry(certification)
+
 
         
 
@@ -74,11 +83,18 @@ def main() :
         decision.display()
 
         #retrive the workflow
-        workflow=workflow_registry.get_workFlow(decision.workflow_name)
+        workflow=workflow_registry.get_workflow(decision.workflow_name)
 
 
         for index,agent in enumerate(workflow,start=1):
-            print(f"{index}.{agent.title()}Agent")
+            if isinstance(agent,list):
+                parallel_agent=", ".join(
+                    a.title() for a in agent
+                )
+                print(f"{index}.Parrllel Stage->[{parallel_agent}]Agent")
+            else:
+                print(f"{index}.{agent.title()}Agent")
+
 
         final_response = orc.execute(workflow)
 
@@ -87,6 +103,10 @@ def main() :
         print("="*70)
         print(final_response.output)
 
+        #execution summary
+        orc.display_execution_summary()
 
-    if __name__ == "__main__":
-        main()
+
+
+if __name__ == "__main__":
+    main()

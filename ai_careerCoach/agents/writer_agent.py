@@ -15,8 +15,8 @@ class WriterAgent(BaseAgent):
         return "writer"
     # as key hai to small mai rakha
 
-    def Build_Promt(self):
-        research_res=self.memory.get("research")
+    def build_prompt(self):
+        research_res=self.memory.get("researcher")
         return WRITER_PROMPT.format(research_output=research_res.output)
     
 

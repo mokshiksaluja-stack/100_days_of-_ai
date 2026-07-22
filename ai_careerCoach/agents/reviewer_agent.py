@@ -15,9 +15,10 @@ class ReviewerAgent(BaseAgent):
         return "reviewer"
     # as key hai to small mai rakha
 
-    def Build_Promt(self):
+    def build_prompt(self):
         writer_res=self.memory.get("writer")
-        return REVIEWER_PROMPT.format(roadmap=writer_res.output)
+        roadmap = writer_res.output if writer_res is not None else self.memory.get("user_query")
+        return REVIEWER_PROMPT.format(roadmap=roadmap)
     
 
     #{user_query} is a placeholder.

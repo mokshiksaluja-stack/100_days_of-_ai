@@ -15,9 +15,10 @@ class ResearchAgent(BaseAgent):
         return "researcher"
     # as key hai to small mai rakha
 
-    def Build_Promt(self):
+    def build_prompt(self):
         planner_res=self.memory.get("planner")
-        return RESEARCH_PROMPT.format(planner_output=planner_res.output)
+        planner_output = planner_res.output if planner_res is not None else self.memory.get("user_query")
+        return RESEARCH_PROMPT.format(planner_output=planner_output)
     
 
     #{user_query} is a placeholder.

@@ -15,7 +15,7 @@ from dataclasses import dataclass
 class WorkFlowDecision:
     workflow_name:str
     confidence:str
-    reson:str
+    reason:str
 
     def display(self)->None:
         
